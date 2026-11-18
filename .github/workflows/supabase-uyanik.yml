@@ -1,0 +1,14 @@
+name: supabase-uyanik-tut
+# Ucretsiz Supabase projesi 7 gun istek almazsa duraklatiliyor; 3 gunde bir kucuk bir istek atar.
+on:
+  schedule:
+    - cron: "17 6 */3 * *"
+  workflow_dispatch:
+jobs:
+  yokla:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          kod=$(curl -s -o /dev/null -w "%{http_code}" "https://yknoivhzdozgpoaefknp.supabase.co/rest/v1/" -H "apikey: ${{ secrets.SUPABASE_ANON }}" -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON }}")
+          echo "durum: $kod"
+          test "$kod" -lt 500
